@@ -8,7 +8,7 @@ try:
 except IOError:
     print("Откройте сперва файл \"save.py\", чтобы получить файл нейросети.")
 data = weightsFile.read().split("\nsplitdata\n")
-picsNum = 5
+picsNum = 10
 
 weights_input_to_hidden = data[1].split("\n")
 weights_hidden_to_output = data[3].split("\n")
