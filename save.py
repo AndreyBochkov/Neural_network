@@ -2,7 +2,8 @@ Input = input("Даная программа обучает на распозн�
 if Input.lower() != "хорошо":
     exit()
 
-epochs = 5
+hidden_num = int(input("Способность нейросети запоминать? (Влияет на скорость и качество обучения, стандартное значение - 20): "))
+epochs = int(input("Количество циклов обучения: "))
 
 import numpy as np
 
@@ -20,9 +21,9 @@ def load_dataset():
 
 images, labels = load_dataset()
 
-weights_input_to_hidden = np.random.uniform(-0.5, 0.5, (20, 784))
-weights_hidden_to_output = np.random.uniform(-0.5, 0.5, (10, 20))
-bias_input_to_hidden = np.zeros((20, 1))
+weights_input_to_hidden = np.random.uniform(-0.5, 0.5, (hidden_num, 784))
+weights_hidden_to_output = np.random.uniform(-0.5, 0.5, (10, hidden_num))
+bias_input_to_hidden = np.zeros((hidden_num, 1))
 bias_hidden_to_output = np.zeros((10, 1))
 
 e_loss = e_correct = 0

@@ -31,9 +31,10 @@ for i in range(len(bias_input_to_hidden)):
 for i in range(len(bias_hidden_to_output)):
     bias_hidden_to_output[i] = float(bias_hidden_to_output[i])
 
-weights_input_to_hidden = np.reshape(weights_input_to_hidden, (20, 784))
-weights_hidden_to_output = np.reshape(weights_hidden_to_output, (10, 20))
-bias_input_to_hidden = np.reshape(bias_input_to_hidden, (20, 1))
+hidden_num = len(weights_input_to_hidden)
+weights_input_to_hidden = np.reshape(weights_input_to_hidden, (hidden_num, 784))
+weights_hidden_to_output = np.reshape(weights_hidden_to_output, (10, hidden_num))
+bias_input_to_hidden = np.reshape(bias_input_to_hidden, (hidden_num, 1))
 bias_hidden_to_output = np.reshape(bias_hidden_to_output, (10, 1))
 
 iteration = 1
