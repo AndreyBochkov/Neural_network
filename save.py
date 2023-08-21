@@ -2,8 +2,16 @@ Input = input("Даная программа обучает на распозн�
 if Input.lower() != "хорошо":
     exit()
 
-hidden_num = int(input("Способность нейросети запоминать? (Влияет на скорость и качество обучения, стандартное значение - 20): "))
-epochs = int(input("Количество циклов обучения: "))
+hidden_num = ""
+epochs = ""
+
+while not hidden_num.isdecimal():
+    hidden_num = input("Способность нейросети запоминать? (Влияет на скорость и качество обучения, стандартное значение - 20): ")
+
+while not epochs.isdecimal():
+    epochs = input("Количество циклов обучения: ")
+
+hidden_num, epochs = int(hidden_num), int(epochs)
 
 import numpy as np
 
@@ -53,7 +61,7 @@ for epoch in range(epochs):
         weights_input_to_hidden += -learning_rate * delta_hidden @ np.transpose(image)
         bias_input_to_hidden += -learning_rate * delta_hidden
     
-    print(f"Ошибка: {round((e_loss[0] / images.shape[0]) * 100, 3)}%")
+    print(f"Средний ответ на {round((e_loss[0] / images.shape[0]) * 100, 3)} отличен от правильного.")
     print(f"Процент правильных ответов: {round((e_correct / images.shape[0]) * 100, 3)}%")
     e_loss = e_correct = 0
 
@@ -61,18 +69,24 @@ Input = input("Нейросеть запишется в файл. Впишите
 
 if Input.lower() == "хорошо":
     weightsFile = open("neural.network", "w")
+
     for i in range(bias_input_to_hidden.shape[0]):
         print(str(round(bias_input_to_hidden[i][0], 4)), file=weightsFile, flush=True)
     print("splitdata", file=weightsFile, flush=True)
+
     for i in range(weights_input_to_hidden.shape[0]):
         for j in range(weights_input_to_hidden.shape[1]):
             print(str(round(weights_input_to_hidden[i][j], 4)), end=" " if j != weights_input_to_hidden.shape[1]-1 else "", file=weightsFile, flush=True)
         print("\n" if i != weights_input_to_hidden.shape[0]-1 else "", end="", file=weightsFile, flush=True)
     print("\nsplitdata", file=weightsFile, flush=True)
+
     for i in range(bias_hidden_to_output.shape[0]):
         print(str(round(bias_hidden_to_output[i][0], 4)), file=weightsFile, flush=True)
     print("splitdata", file=weightsFile, flush=True)
+
     for i in range(weights_hidden_to_output.shape[0]):
         for j in range(weights_hidden_to_output.shape[1]):
             print(str(round(weights_hidden_to_output[i][j], 4)), end=" " if j != weights_hidden_to_output.shape[1]-1 else "", file=weightsFile, flush=True)
         print("\n" if i != weights_hidden_to_output.shape[0]-1 else "", end="", file=weightsFile, flush=True)
+    
+    weightsFile.close()

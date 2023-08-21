@@ -12,26 +12,21 @@ picsNum = 10
 
 weights_input_to_hidden = data[1].split("\n")
 weights_hidden_to_output = data[3].split("\n")
-bias_input_to_hidden = data[0].split("\n")
-bias_hidden_to_output = data[2].split("\n")
+bias_input_to_hidden = list(map(float, data[0].split("\n")))
+bias_hidden_to_output = list(map(float, data[2].split("\n")))
 
 del data
 weightsFile.close()
 
 for i in range(len(weights_input_to_hidden)):
-    weights_input_to_hidden[i] = weights_input_to_hidden[i].split(" ")
-    for j in range(len(weights_input_to_hidden[i])):
-        weights_input_to_hidden[i][j] = float(weights_input_to_hidden[i][j])
+    weights_input_to_hidden[i] = weights_input_to_hidden[i].split()
+    weights_input_to_hidden[i] = list(map(float, weights_input_to_hidden[i]))
 for i in range(len(weights_hidden_to_output)):
     weights_hidden_to_output[i] = weights_hidden_to_output[i].split(" ")
-    for j in range(len(weights_hidden_to_output[i])):
-        weights_hidden_to_output[i][j] = float(weights_hidden_to_output[i][j])
-for i in range(len(bias_input_to_hidden)):
-    bias_input_to_hidden[i] = float(bias_input_to_hidden[i])
-for i in range(len(bias_hidden_to_output)):
-    bias_hidden_to_output[i] = float(bias_hidden_to_output[i])
+    weights_hidden_to_output[i] = list(map(float, weights_hidden_to_output[i]))
 
 hidden_num = len(weights_input_to_hidden)
+
 weights_input_to_hidden = np.reshape(weights_input_to_hidden, (hidden_num, 784))
 weights_hidden_to_output = np.reshape(weights_hidden_to_output, (10, hidden_num))
 bias_input_to_hidden = np.reshape(bias_input_to_hidden, (hidden_num, 1))
