@@ -7,6 +7,9 @@ try:
     weightsFile = open("neural.network", "r")
 except IOError:
     print("Откройте сперва файл \"save.py\", чтобы получить файл нейросети.")
+    from time import sleep
+    sleep(5)
+    exit(1)
 data = weightsFile.read().split("\nsplitdata\n")
 picsNum = 10
 
