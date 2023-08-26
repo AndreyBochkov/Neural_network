@@ -1,4 +1,4 @@
-Input = input("Эта программа загружает файл нейросети, распознающей цифры \"neural.network\", и работает с ним, передавая нейросети картинки \"custom1.jpg\", \"custom2.jpg\" ... \"custom10.jpg\" из папки \"data\". Чтобы просмотреть ответ нейросети на следующую картинку, закройте окно с нынешней. Вы можете изменить картинки.\nНажмине Enter для продолжения...")
+Input = input("Эта программа загружает файл нейросети, распознающей цифры \"neural.network\", и работает с ним, передавая нейросети картинки \"custom1.jpg\", \"custom2.jpg\" ... \"custom10.jpg\" из папки \"data\". Чтобы просмотреть ответ нейросети на другую картинку, закройте окно с нынешней. Вы можете изменить картинки и добавлять новые. Чтобы завершить программу, введите \"exit\" на вопрос \"Картинка: data\custom\".\nНажмине Enter для продолжения...")
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +11,6 @@ except IOError:
     sleep(5)
     exit(1)
 data = weightsFile.read().split("\nsplitdata\n")
-picsNum = 10
 
 weights_input_to_hidden = data[1].split("\n")
 weights_hidden_to_output = data[3].split("\n")
@@ -35,10 +34,23 @@ weights_hidden_to_output = np.reshape(weights_hidden_to_output, (10, hidden_num)
 bias_input_to_hidden = np.reshape(bias_input_to_hidden, (hidden_num, 1))
 bias_hidden_to_output = np.reshape(bias_hidden_to_output, (10, 1))
 
-iteration = 1
+picNum = ""
 
-while iteration <= picsNum:
-    test_image = plt.imread(f"data\custom{iteration}.jpg", format="jpeg")
+def nextPicture():
+    global picNum
+    picNum = input("Картинка: data\custom")
+    if picNum.lower() == "exit":
+        exit()
+
+nextPicture()
+
+while True:
+    try:
+        test_image = plt.imread(f"data\custom{picNum}.jpg", format="jpeg")
+    except FileNotFoundError:
+        print("Введите число так, чтобы получилось имя нужного файла и нажмите Enter.")
+        nextPicture()
+        continue
 
     gray = lambda rgb : np.dot(rgb[... , :3] , [0.299 , 0.587, 0.114]) 
     test_image = 1 - (gray(test_image).astype("float32") / 255)
@@ -55,4 +67,4 @@ while iteration <= picsNum:
     plt.imshow(test_image.reshape(28, 28), cmap="Greys")
     plt.title(f"Ответ: {output.argmax()}")
     plt.show()
-    iteration += 1
+    nextPicture()
